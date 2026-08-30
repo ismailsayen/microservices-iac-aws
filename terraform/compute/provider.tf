@@ -1,6 +1,5 @@
 terraform {
   backend "s3" {
-    region  = "eu-west-3"
     encrypt      = true
     use_lockfile = true
   }
@@ -9,11 +8,11 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
-
     }
   }
 }
 
 provider "aws" {
-  region = "eu-west-3"
+  region  = "eu-west-3"
+  profile = "ismail.sayen"
 }

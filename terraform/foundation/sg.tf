@@ -10,6 +10,15 @@ module "alb_security_group" {
 }
 
 
+module "ec2_sg" {
+  source              = "./modules/security-group"
+  security_group_name = "ssh-sg"
+  vpc_id              = module.my_vpc.vpc_id
+  ingress_rules_cidr = [
+    { from_port = 22, to_port = 22, ip_protocol = "tcp",cidr_ipv4 = "0.0.0.0/0"  }
+  ]
+}
+
 module "api_gateway_sg" {
   source              = "../modules/security-group"
   security_group_name = "api-gateway-sg"
