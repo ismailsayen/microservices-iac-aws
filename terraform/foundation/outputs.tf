@@ -26,6 +26,25 @@ output "agw-sg-id" {
   value = module.api_gateway_sg.sg-id
 }
 
+output "alb_sg-id" {
+  value = module.alb_sg.sg-id
+}
+
+output "inventory-db-sg-id" {
+  value = module.inventory-db-sg.sg-id
+}
+
+output "inventory-app-sg-id" {
+  value = module.inventory-app-sg.sg-id
+}
+
+output "billing-db-sg-id" {
+  value = module.billing-db-sg.sg-id
+}
+
+output "billing-app-sg-id" {
+  value = module.billing-app-sg.sg-id
+}
 output "public_subnets_ids" {
   value = module.my_vpc.public_subnets_ids
 }
@@ -41,4 +60,9 @@ output "service_discovery_namespace_arn" {
 output "agw-tg-arn" {
   value = module.target_groups["api-gateway"].arn
 }
+
+output "rabbitmq-tg-arn" {
+  value = module.target_groups["rabbitmq-dashboard"].arn 
+}
+
 

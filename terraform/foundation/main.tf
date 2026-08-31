@@ -4,8 +4,6 @@ module "secrets-manager" {
   secret_values = {
     region                   = var.aws_region
     profile                  = var.aws_profile
-    bucket                   = var.bucket
-    key                      = var.key
     rabbitmq_envs            = var.rabbitmq_envs
     rabbitmq_attr            = var.rabbitmq_attr
     api_gateway_envs         = var.api_gateway_envs

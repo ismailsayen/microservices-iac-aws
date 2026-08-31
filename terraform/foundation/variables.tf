@@ -3,16 +3,6 @@ variable "aws_region" {
   type        = string
 }
 
-variable "bucket" {
-  description = "The S3 bucket to store the Terraform state"
-  type        = string
-}
-
-variable "key" {
-  description = "The S3 key to store the Terraform state"
-  type        = string
-}
-
 variable "aws_profile" {
   description = "The AWS profile to use for authentication"
   type        = string

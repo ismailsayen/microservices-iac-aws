@@ -8,10 +8,10 @@ data "aws_ami" "ecs_ami" {
   }
 }
 
-resource "aws_key_pair" "this" {
-    key_name = "key-test"
-    public_key = file("/workspace/id_ed25519.pub")
-}
+# resource "aws_key_pair" "this" {
+#     key_name = "key-test"
+#     public_key = file("/workspace/id_ed25519.pub")
+# }
 
 resource "aws_launch_template" "ecs_launch_template" {
   name_prefix   = "${var.environment}-ecs-launch-template-"
@@ -22,7 +22,7 @@ resource "aws_launch_template" "ecs_launch_template" {
               echo ECS_CLUSTER=${var.ecs_cluster_name} >> /etc/ecs/ecs.config
               EOF
             )
-  key_name = aws_key_pair.this.key_name
+  # key_name = aws_key_pair.this.key_name
 
  vpc_security_group_ids = [var.security-grp]
 

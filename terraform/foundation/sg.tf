@@ -1,4 +1,4 @@
-module "alb_security_group" {
+module "alb_sg" {
   source              = "../modules/security-group"
   security_group_name = "alb-sg"
   vpc_id              = module.my_vpc.vpc_id
@@ -11,7 +11,7 @@ module "alb_security_group" {
 
 
 module "ec2_sg" {
-  source              = "./modules/security-group"
+  source              = "../modules/security-group"
   security_group_name = "ssh-sg"
   vpc_id              = module.my_vpc.vpc_id
   ingress_rules_cidr = [
@@ -24,7 +24,7 @@ module "api_gateway_sg" {
   security_group_name = "api-gateway-sg"
   vpc_id              = module.my_vpc.vpc_id
   ingress_rules_sg  = [
-    { from_port = var.api_gateway_attr.service_port, to_port = var.api_gateway_attr.service_port, ip_protocol = "tcp", source_sg = module.alb_security_group.sg-id }
+    { from_port = var.api_gateway_attr.service_port, to_port = var.api_gateway_attr.service_port, ip_protocol = "tcp", source_sg = module.alb_sg.sg-id }
   ]
 }
 
@@ -36,7 +36,7 @@ module "rabbitmq_sg" {
   ingress_rules_sg = [
     { from_port = var.rabbitmq_attr.service_port, to_port = var.rabbitmq_attr.service_port, ip_protocol = "tcp", source_sg = module.api_gateway_sg.sg-id },
     { from_port = var.rabbitmq_attr.service_port, to_port = var.rabbitmq_attr.service_port, ip_protocol = "tcp", source_sg = module.billing-app-sg.sg-id },
-    { from_port = 15672, to_port = 15672, ip_protocol = "tcp", source_sg = module.alb_security_group.sg-id }
+    { from_port = 15672, to_port = 15672, ip_protocol = "tcp", source_sg = module.alb_sg.sg-id }
 
   ]
 }
@@ -83,6 +83,5 @@ module "billing-app-sg" {
       ip_protocol = "tcp",
       source_sg = module.api_gateway_sg.sg-id
     }
-    
   ]
 }
