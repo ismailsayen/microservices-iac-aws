@@ -4,6 +4,7 @@ module "secrets-manager" {
   secret_values = {
     region                   = var.aws_region
     profile                  = var.aws_profile
+    domain_name              = var.domain_name
     rabbitmq_envs            = var.rabbitmq_envs
     rabbitmq_attr            = var.rabbitmq_attr
     api_gateway_envs         = var.api_gateway_envs
@@ -83,25 +84,40 @@ module "service_discovery_namespace" {
 # target_groups
 # ==========================================
 
-
 module "target_groups" {
   source   = "../modules/lb_target_group"
   for_each = local.target_groups_config
 
   # Valeurs communes fixes
   vpc_id                = module.my_vpc.vpc_id
-  tg_protocol           = "HTTP"
+  tg_protocol           = each.value.tg_protocol
   tg_target_type        = "ip"
   health_check_enabled  = true
-  health_check_protocol = "HTTP"
+  health_check_protocol = each.value.health_check_protocol
   health_check_matcher  = "200"
   health_check_interval = 30
   health_check_timeout  = 5
   healthy_threshold     = 2
   unhealthy_threshold   = 3
-
-    # Valeurs dynamiques issues de la map
   tg_name           = each.value.tg_name
   tg_port           = each.value.tg_port
   health_check_path = each.value.health_check_path
+}
+
+# ==========================================
+# CERTIFICAT MANAGER
+# ==========================================
+
+resource "aws_acm_certificate" "wildcard" {
+  domain_name               = var.domain_name
+  subject_alternative_names = ["*.${var.domain_name}"]
+  validation_method         = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "wildcard-cert-ismailsayen-space"
+  }
 }

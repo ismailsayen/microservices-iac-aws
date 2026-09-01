@@ -32,6 +32,14 @@ module "alb" {
   enable_deletion_protection = false
   
   listeners={
+
+    "443" = {
+    port            = 443
+    protocol        = "HTTPS"
+    ssl_policy      = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    certificate_arn = data.terraform_remote_state.foundation.outputs.certificate_arn
+    action_type     = "fixed-response"
+  },
     "15672" = {
       port     = 15672
       protocol = "HTTP"
@@ -40,13 +48,14 @@ module "alb" {
     "80" = {
       port     = 80
       protocol = "HTTP"
+      action_type = "redirect"
     }
   }
   listener_rules = {
     "api_gateway" = {
       priority         = 1
       target_group_arn = data.terraform_remote_state.foundation.outputs.agw-tg-arn
-      listener_key     = "80"
+      listener_key     = "443"
       header_condition = {
         name   = "X-Header-Secret"
         values = [local.secret["alb_custom_header_secret"]]

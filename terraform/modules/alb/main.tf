@@ -15,6 +15,8 @@ resource "aws_lb_listener" "this" {
   port              = each.value.port
   protocol          = each.value.protocol
 
+  ssl_policy      = lookup(each.value, "ssl_policy", null)
+  certificate_arn = lookup(each.value, "certificate_arn", null)
   dynamic "default_action" {
     for_each = each.value.arn != null ? [each.value.arn] : []
     content {
@@ -23,11 +25,24 @@ resource "aws_lb_listener" "this" {
     }
   }
 
+  # Action 2: Redirection HTTP (80) vers HTTPS (443)
   dynamic "default_action" {
-    for_each = each.value.arn == null ? [1] : []
+    for_each = lookup(each.value, "action_type", null) == "redirect" ? [1] : []
+    content {
+      type = "redirect"
+      redirect {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
+      }
+    }
+  }
+
+  # Action 3: Fixed Response 403 par défaut (ex: 443)
+  dynamic "default_action" {
+    for_each = lookup(each.value, "action_type", null) == "fixed-response" ? [1] : []
     content {
       type = "fixed-response"
-
       fixed_response {
         content_type = "text/plain"
         message_body = "Access Denied: Direct access to ALB is not allowed."
@@ -51,7 +66,6 @@ resource "aws_lb_listener_rule" "this" {
       }
     }
   }
-
 
   dynamic "condition" {
     for_each = each.value.path_condition != null ? [each.value.path_condition] : []

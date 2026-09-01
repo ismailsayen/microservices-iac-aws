@@ -27,7 +27,6 @@ variable "listener_rules" {
     priority         = number
     target_group_arn = string
     listener_key     = string
-    # Conditions optionnelles
     header_condition = optional(object({
       name   = string
       values = list(string)
@@ -36,6 +35,8 @@ variable "listener_rules" {
     path_condition = optional(object({
       values = list(string)
     }))
+
+
   }))
   default = {}
 }
@@ -45,6 +46,9 @@ variable "listeners" {
     port     = number
     protocol = string
     arn      = optional(string)
+    ssl_policy = optional(string)
+    certificate_arn = optional(string)
+    action_type = optional(string)
   }))
   default = {}
 }
