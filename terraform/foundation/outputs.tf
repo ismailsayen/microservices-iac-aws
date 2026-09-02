@@ -26,6 +26,11 @@ output "agw-sg-id" {
   value = module.api_gateway_sg.sg-id
 }
 
+
+output "rabbitmq_sg-id" {
+  value = module.rabbitmq_sg.sg-id
+}
+
 output "alb_sg-id" {
   value = module.alb_sg.sg-id
 }

@@ -10,3 +10,4 @@ crash.*.log
 .terraformrc
 terraform.rc
 config.yaml
+access_token.txt

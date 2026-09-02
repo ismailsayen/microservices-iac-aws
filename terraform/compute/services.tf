@@ -73,7 +73,7 @@ module "rabbitmq_task" {
   cluster_id            =  data.terraform_remote_state.foundation.outputs.cluster_id
   execution_role_arn    = data.terraform_remote_state.foundation.outputs.ecs_task_execution_role_arn
 
-  security_group_id      = data.terraform_remote_state.foundation.outputs.alb_sg-id  //#################################################
+  security_group_id      = data.terraform_remote_state.foundation.outputs.rabbitmq_sg-id
   subnet_ids             = data.terraform_remote_state.foundation.outputs.public_subnets_ids
   log_group_name         = data.terraform_remote_state.foundation.outputs.log_group_name
   log_prefix             = "/ecs/${local.secret["rabbitmq_attr"].service_name}"
