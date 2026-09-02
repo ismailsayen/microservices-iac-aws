@@ -69,3 +69,7 @@ output "rabbitmq-tg-arn" {
 output "certificate_arn" {
   value = aws_acm_certificate.wildcard.arn
 }
+
+output "route53_zone_id" {
+  value = aws_route53_zone.this.zone_id
+}

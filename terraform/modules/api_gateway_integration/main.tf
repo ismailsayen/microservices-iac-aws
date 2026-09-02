@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_integration" "alb_integration" {
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
 
-  integration_uri = "http://${var.alb_dns_name}/{proxy}"
+  integration_uri = "https://${var.alb_dns_name}/{proxy}"
 
   request_parameters = {
     "overwrite:header.X-Header-Secret" = var.alb_custom_header_secret

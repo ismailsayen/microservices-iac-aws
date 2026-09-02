@@ -12,6 +12,10 @@ variable "aws_profile" {
 variable "domain_name" {
   type = string
 }
+
+variable "alb_domain_name" {
+  type = string
+}
 variable "rabbitmq_envs" {
   type = list(object({
     name  = string
@@ -115,3 +119,4 @@ variable "alb_custom_header_secret" {
 variable "environment" {
   default = "production"
 }
+

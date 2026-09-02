@@ -4,7 +4,7 @@ module "alb_sg" {
   vpc_id              = module.my_vpc.vpc_id
   ingress_rules_cidr = [
     { from_port = 80, to_port = 80, ip_protocol = "tcp", cidr_ipv4 = "0.0.0.0/0" },
-    { from_port = 433, to_port = 433, ip_protocol = "tcp", cidr_ipv4 = "0.0.0.0/0" },
+    { from_port = 443, to_port = 443, ip_protocol = "tcp", cidr_ipv4 = "0.0.0.0/0" },
     { from_port = 15672, to_port = 15672, ip_protocol = "tcp", cidr_ipv4 = "0.0.0.0/0" }
   ]
 }

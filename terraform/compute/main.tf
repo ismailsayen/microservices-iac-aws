@@ -6,7 +6,7 @@ module "auto_scaling" {
   max_size                 = 9
   min_size                 = 0
   subnet_ids               = data.terraform_remote_state.foundation.outputs.public_subnets_ids
-  ecs_cluster_name         = data.terraform_remote_state.foundation.outputs.cluster_name 
+  ecs_cluster_name         = data.terraform_remote_state.foundation.outputs.cluster_name
   ecs_instance_profile_arn = data.terraform_remote_state.foundation.outputs.ec2_instance_profile_arn
   security-grp             = data.terraform_remote_state.foundation.outputs.ec2_sg-id
 
@@ -30,24 +30,24 @@ module "alb" {
   ]
   alb_subnet_ids             = data.terraform_remote_state.foundation.outputs.public_subnets_ids
   enable_deletion_protection = false
-  
-  listeners={
+
+  listeners = {
 
     "443" = {
-    port            = 443
-    protocol        = "HTTPS"
-    ssl_policy      = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-    certificate_arn = data.terraform_remote_state.foundation.outputs.certificate_arn
-    action_type     = "fixed-response"
-  },
+      port            = 443
+      protocol        = "HTTPS"
+      ssl_policy      = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+      certificate_arn = data.terraform_remote_state.foundation.outputs.certificate_arn
+      action_type     = "fixed-response"
+    },
     "15672" = {
       port     = 15672
       protocol = "HTTP"
-      arn = data.terraform_remote_state.foundation.outputs.rabbitmq-tg-arn
+      arn      = data.terraform_remote_state.foundation.outputs.rabbitmq-tg-arn
     },
     "80" = {
-      port     = 80
-      protocol = "HTTP"
+      port        = 80
+      protocol    = "HTTP"
       action_type = "redirect"
     }
   }
@@ -61,5 +61,17 @@ module "alb" {
         values = [local.secret["alb_custom_header_secret"]]
       }
     }
+  }
+}
+
+resource "aws_route53_record" "subdomain_alias" {
+  zone_id = data.terraform_remote_state.foundation.outputs.route53_zone_id
+  name    = "${local.secret["alb_domain_name"]}.${local.secret["domain_name"]}"
+  type    = "A"
+
+  alias {
+    name                   = module.alb.dns_name
+    zone_id                = module.alb.alb_zone_id
+    evaluate_target_health = true
   }
 }
