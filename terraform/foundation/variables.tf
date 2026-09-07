@@ -16,6 +16,10 @@ variable "domain_name" {
 variable "alb_domain_name" {
   type = string
 }
+
+variable "alert_email" {
+  type = string
+}
 variable "rabbitmq_envs" {
   type = list(object({
     name  = string

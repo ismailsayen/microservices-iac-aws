@@ -6,6 +6,7 @@ module "secrets-manager" {
     profile                  = var.aws_profile
     domain_name              = var.domain_name
     alb_domain_name          = var.alb_domain_name
+    alert_email               = var.alert_email
     rabbitmq_envs            = var.rabbitmq_envs
     rabbitmq_attr            = var.rabbitmq_attr
     api_gateway_envs         = var.api_gateway_envs
