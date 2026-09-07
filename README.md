@@ -55,25 +55,25 @@ Pass the target folder to the `make` commands using the `DIR` variable.
 #### Step A: Deploy Bootstrap
 Initialize and deploy the remote backend first:
 ```bash
-make init DIR=bootstrap
-make plan DIR=bootstrap
-make apply DIR=bootstrap
+terraform init DIR=bootstrap
+terraform plan DIR=bootstrap
+terraform apply DIR=bootstrap
 ```
 
 #### Step B: Deploy Foundation
 Next, deploy the core networking and foundation layer:
 ```bash
-make init DIR=foundation
-make plan DIR=foundation
-make apply DIR=foundation
+terraform init DIR=foundation
+terraform plan DIR=foundation
+terraform apply DIR=foundation
 ```
 
 #### Step C: Deploy Compute
 Finally, deploy the compute infrastructure and applications:
 ```bash
-make init DIR=compute
-make plan DIR=compute
-make apply DIR=compute
+terraform init DIR=compute
+terraform plan DIR=compute
+terraform apply DIR=compute
 ```
 
 ---
@@ -84,13 +84,13 @@ To avoid ongoing AWS costs, destroy your infrastructure tiers. They must be torn
 
 ```bash
 # 1. Destroy compute first
-make destroy DIR=compute
+terraform destroy DIR=compute
 
 # 2. Destroy foundation second
-make destroy DIR=foundation
+terraform destroy DIR=foundation
 
 # 3. Destroy bootstrap last
-make destroy DIR=bootstrap
+terraform destroy DIR=bootstrap
 ```
 
 ---
