@@ -24,6 +24,8 @@ RUN TER_VER=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | 
     mv terraform /usr/local/bin/ && \
     rm "terraform_${TER_VER}_linux_amd64.zip"
 
+RUN export AWS_PROFILE="ismail.sayen"
+
 WORKDIR /workspace
 
 CMD ["/bin/bash"]
